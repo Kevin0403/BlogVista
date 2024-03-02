@@ -1,11 +1,18 @@
 package org.example.backend.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Blog {
     @Id
-    @GeneratedValue
     int id;
 
     @Column(name = "Title")
@@ -16,7 +23,7 @@ public class Blog {
     String status;
 
     @ManyToOne
-    @Column(name = "fk_user")
+    @JoinColumn(name = "fk_user")
     User user;
 
 }

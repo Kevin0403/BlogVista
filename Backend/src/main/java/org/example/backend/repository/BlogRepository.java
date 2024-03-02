@@ -1,15 +1,15 @@
 package org.example.backend.repository;
 
-
-import org.example.backend.entities.User;
+import org.example.backend.entities.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.List;
 
-    @Query("select user from User user where user.email = ?1")
-    User findByEmail(@Param("email") String email);
+@Repository
+public interface BlogRepository extends JpaRepository<Blog, Long> {
+    @Query("select blog from Blog blog where blog.user = :email")
+     List<Blog> findByUser(String email);
 }
