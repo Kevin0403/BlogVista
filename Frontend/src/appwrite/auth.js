@@ -1,22 +1,20 @@
 import conf from "../conf/conf.js"
 
-import { Client, Account, ID } from "appwrite";
+// import { Client, Account, ID } from "appwrite";
+import database from "./database.js";
 
 export class AuthService {
-    client ;
     account;
 
     constructor(){
-        this.client = new Client()
-        .setEndpoint(conf.appwriteUrl)
-        .setProject(conf.appwriteProjectId);
+        
 
-        this.account = new Account(this.client)
+        this.account = database
     }
 
     async createAccount({email, password, name}){
         try {
-            const userAccount = await this.account.create(ID.unique(), email, password, name)
+            const userAccount = await this.account.createAccount( email, password, name)
            
 
             if(userAccount){
@@ -33,7 +31,10 @@ export class AuthService {
 
     async login({email, password}){
         try {
-            const user = await this.account.createEmailSession(email, password)
+            const user = await this.account.login(email, password)
+
+            localStorage.clear();
+            localStorage.setItem('user', JSON.stringify(user));
             
             return user;
         } catch (error) {
@@ -44,7 +45,7 @@ export class AuthService {
 
     async getCurrentUser(){
         try {
-            return await this.account.get();
+            return JSON.parse(localStorage.getItem('user'));
         } catch (error) {
             console.log('error in getCurrentUser' ,error);
         }
@@ -54,7 +55,7 @@ export class AuthService {
 
     async logout(){
         try{
-            await this.account.deleteSessions();
+            localStorage.clear();
         }catch(error){
             console.log(error);
         }

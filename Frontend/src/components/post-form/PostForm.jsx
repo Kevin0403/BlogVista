@@ -9,7 +9,7 @@ function PostForm({post}){
     const {register, handleSubmit, watch, setValue, control, getValues} = useForm({
         defaultValues:{
             title : post?.title || '',
-            slug: post?.$id || '',
+            slug: post?.id || '',
             status: post?.status || 'active',
             content : post?.content || '' 
 
@@ -22,31 +22,31 @@ function PostForm({post}){
 
     const submit = async (data) => {
         if(post){
-            const file = data.image[0] ?  appwriteService.uploadFile(data.image[0]): null
+            // const file = data.image[0] ?  appwriteService.uploadFile(data.image[0]): null
             
-            if(file){
-                appwriteService.deleteFile(post.image)
-            }
+            // if(file){
+            //     appwriteService.deleteFile(post.image)
+            // }
 
-            const dbPost = await appwriteService.updatePost(post.$id, {
+            const dbPost = await appwriteService.updatePost(post.id, {
                 ...data, 
-                image : file ? file.$id : post.image
+                // image : file ? file.$id : post.image
             })
 
             if (dbPost){
-                navigate(`/post/${dbPost.$id}`)
+                navigate(`/post/${dbPost.id}`)
             }
         }
         else{
-            const file = await appwriteService.uploadFile(data.image[0])
-            if(file){
+            // const file = await appwriteService.uploadFile(data.image[0])
                 const dbPost = await appwriteService.createPost({
                     ...data,
-                    image : file.$id,
-                    userId : userData.$id
+                    // image : file.$id,
+                    // userId : userData.email
                 })
-                if(dbPost) navigate(`/post/${post.$id}`)
-            }
+
+                console.log("dbPost", dbPost)
+                if(dbPost) navigate(`/post/${dbPost.id}`)
         }
     }
 
@@ -92,7 +92,7 @@ function PostForm({post}){
                 <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
             </div>
             <div className="w-1/3 px-2">
-                <Input
+                {/* <Input
                     label="Featured Image :"
                     type="file"
                     className="mb-4"
@@ -107,7 +107,7 @@ function PostForm({post}){
                             className="rounded-lg"
                         />
                     </div>
-                )}
+                )} */}
                 <Select
                     options={["active", "inactive"]}
                     label="Status"

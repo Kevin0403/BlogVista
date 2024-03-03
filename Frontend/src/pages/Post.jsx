@@ -12,7 +12,7 @@ export default function Post() {
 
     const userData = useSelector((state) => state.auth.userData);
 
-    const isAuthor = post && userData ? post.userId === userData.$id : false;
+    const isAuthor = post && userData ? post.user.email === userData.email : false;
 
     useEffect(() => {
         if (slug) {
@@ -24,9 +24,8 @@ export default function Post() {
     }, [slug, navigate]);
 
     const deletePost = () => {
-        appwriteService.deletePost(post.$id).then((status) => {
+        appwriteService.deletePost(post.id).then((status) => {
             if (status) {
-                appwriteService.deleteFile(post.image);
                 navigate("/");
             }
         });
@@ -36,15 +35,10 @@ export default function Post() {
         <div className="py-8">
             <Container>
                 <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
-                    <img
-                        src={appwriteService.getFilePreview(post.image)}
-                        alt={post.title}
-                        className="rounded-xl"
-                    />
 
                     {isAuthor && (
                         <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.$id}`}>
+                            <Link to={`/edit-post/${post.id}`}>
                                 <Button bgColor="bg-green-500" className="mr-3">
                                     Edit
                                 </Button>
