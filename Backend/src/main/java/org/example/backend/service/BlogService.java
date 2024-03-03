@@ -35,4 +35,25 @@ public class BlogService {
         return blogRepository.findByUser(user.getEmail());
     }
 
+    public Blog getBlogById(String id){
+        return blogRepository.findById(id);
+    }
+
+    public Blog updateBlog(Blog blog, String id){
+        Blog update = blogRepository.findById(id);
+        update.setTitle(blog.getTitle());
+//        update.setId(blog.getId())x;
+        update.setContent(blog.getContent());
+        update.setStatus(blog.getStatus());
+        blogRepository.save(update);
+
+
+        return update;
+    }
+
+    public boolean deleteBlog(String id){
+        blogRepository.delete(blogRepository.findById(id));
+        return true;
+    }
+
 }

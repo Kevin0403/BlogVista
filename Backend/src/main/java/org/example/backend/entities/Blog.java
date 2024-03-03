@@ -13,11 +13,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Blog {
     @Id
-    int id;
+    String id;
 
     @Column(name = "Title")
     String title;
 
+    @Column(name = "Content", length = Integer.MAX_VALUE)
     String content;
 
     String status;

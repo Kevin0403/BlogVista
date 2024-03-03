@@ -12,4 +12,7 @@ import java.util.List;
 public interface BlogRepository extends JpaRepository<Blog, Long> {
     @Query("select blog from Blog blog where blog.user = :email")
      List<Blog> findByUser(String email);
+
+    @Query("select blog from Blog blog where blog.id = :id")
+    Blog findById(String id);
 }
